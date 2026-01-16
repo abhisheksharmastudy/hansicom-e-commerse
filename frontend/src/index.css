@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* 'Deep Safety' Theme Variables */
+    
+    /* Primary Background: Rich Charcoal */
+    --background: 224 47% 11%; /* #0F172A */
+    --foreground: 210 40% 98%; /* #F8FAFC (Off-white) */
+
+    /* Cards & Surfaces: Slightly lighter charcoal */
+    --card: 224 47% 13%; 
+    --card-foreground: 210 40% 98%;
+
+    --popover: 224 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Accent: International Safety Orange */
+    /* Hand-picked: #FF5722 */
+    --primary: 14 100% 57%; 
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: Industrial Grey */
+    --secondary: 215 19% 35%; /* #475569 */
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 215 25% 27%; /* #334155 */
+    --muted-foreground: 215 20% 65%; /* #94A3B8 (Industrial Grey) */
+
+    --accent: 14 100% 57%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 217 33% 17%; /* Subtle glass border base */
+    --input: 217 33% 17%;
+    --ring: 14 100% 57%;
+
+    --radius: 0rem; /* Industrial sharp edges, or slightly rounded depending on bentos */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased font-sans selection:bg-primary/30 selection:text-primary-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tight font-bold;
+  }
+}
+
+@layer utilities {
+  /* The "Glass" Standard */
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+  
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl;
+  }
+
+  /* Text Readouts */
+  .font-mono-numbers {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Safe Area Glow */
+  .glow-primary {
+    box-shadow: 0 0 20px -5px rgba(255, 87, 34, 0.5);
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 10px rgba(255, 87, 34, 0.5);
+  }
+  
+  /* Scrollbar for technical feel */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0F172A; 
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #334155; 
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #FF5722; 
+  }
+}
