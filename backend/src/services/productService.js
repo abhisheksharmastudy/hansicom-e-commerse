@@ -79,12 +79,12 @@ const MOCK_PRODUCTS = [
 /**
  * Get all active products
  */
-export async function getAllProducts() {
+export async function getAllProducts({ includeInactive = false } = {}) {
   const sheets = await getSheetsClient();
   
   // Use mock data if Sheets not configured
   if (!sheets) {
-    return MOCK_PRODUCTS.filter(p => p.status === 'active');
+    return includeInactive ? [...MOCK_PRODUCTS] : MOCK_PRODUCTS.filter(p => p.status === 'active');
   }
 
   try {
@@ -95,7 +95,7 @@ export async function getAllProducts() {
 
     const rows = response.data.values || [];
     
-    return rows
+    const products = rows
       .map(row => ({
         product_id: row[0],
         product_name: row[1],
@@ -108,11 +108,11 @@ export async function getAllProducts() {
         price: parseFloat(row[8]) || 0,
         status: row[9],
         created_at: row[10]
-      }))
-      .filter(product => product.status === 'active');
+      }));
+    return includeInactive ? products : products.filter(product => product.status === 'active');
   } catch (error) {
     console.error('Error fetching products:', error.message);
-    return MOCK_PRODUCTS.filter(p => p.status === 'active');
+    return includeInactive ? [...MOCK_PRODUCTS] : MOCK_PRODUCTS.filter(p => p.status === 'active');
   }
 }
 

@@ -80,7 +80,7 @@ router.post('/login',
  */
 router.get('/products', verifyToken, async (req, res) => {
   try {
-    const products = await getAllProducts();
+    const products = await getAllProducts({ includeInactive: true });
     res.json({ success: true, products });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch products' });
