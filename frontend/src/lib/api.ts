@@ -196,6 +196,16 @@ export async function getEnquiries(filters?: { startDate?: string; endDate?: str
   return response.enquiries;
 }
 
+interface AdminProductsResponse {
+  success: boolean;
+  products: Product[];
+}
+
+export async function getAdminProducts(): Promise<Product[]> {
+  const response = await fetchAPI<AdminProductsResponse>('/admin/products');
+  return response.products;
+}
+
 export interface MonthlyReport {
   month: string;
   total_enquiries: number;
