@@ -18,6 +18,9 @@ export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [sortBy, setSortBy] = useState("popular")
 
+  const normalizedSearchQuery = searchQuery.trim().toLowerCase()
+  const getRating = (product: Product & { rating?: number }) => product.rating ?? 0
+
   // Fetch products from API
   useEffect(() => {
     async function fetchProducts() {
@@ -38,10 +41,16 @@ export default function Products() {
 
   const filteredProducts = products
     .filter(p => selectedCategory === "All" || p.category === selectedCategory)
-    .filter(p => p.product_name.toLowerCase().includes(searchQuery.toLowerCase()) || p.product_id.toLowerCase().includes(searchQuery.toLowerCase()))
+    .filter(p => {
+      if (!normalizedSearchQuery) return true
+      const name = (p.product_name ?? "").toLowerCase()
+      const id = (p.product_id ?? "").toLowerCase()
+      return name.includes(normalizedSearchQuery) || id.includes(normalizedSearchQuery)
+    })
     .sort((a, b) => {
       if (sortBy === "price-low") return a.price - b.price
       if (sortBy === "price-high") return b.price - a.price
+      if (sortBy === "rating") return getRating(b) - getRating(a)
       return 0 // Default order from API
     })
 
@@ -184,7 +193,7 @@ export default function Products() {
         </div>
         )}
 
-        {filteredProducts.length === 0 && (
+        {!loading && !error && filteredProducts.length === 0 && (
           <div className="text-center py-16">
             <p className="text-muted-foreground text-lg">No products found matching your criteria.</p>
             <Button variant="outline" className="mt-4" onClick={() => { setSearchQuery(""); setSelectedCategory("All"); }}>Clear Filters</Button>

@@ -358,3 +358,25 @@ export function isUserLoggedIn(): boolean {
 export function getUserToken(): string | null {
   return localStorage.getItem('user_token');
 }
+
+// ─────────────────────────────────────────────────────────────
+// Admin User Management
+// ─────────────────────────────────────────────────────────────
+
+export interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  created_at: string;
+  provider: string;
+}
+
+interface CustomersResponse {
+  success: boolean;
+  users: Customer[];
+}
+
+export async function getCustomers(): Promise<Customer[]> {
+  const response = await fetchAPI<CustomersResponse>('/admin/users');
+  return response.users;
+}

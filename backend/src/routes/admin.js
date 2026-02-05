@@ -6,6 +6,7 @@ import { verifyToken } from '../middleware/auth.js';
 import { createProduct, updateProduct, disableProduct, getAllProducts } from '../services/productService.js';
 import { getAllEnquiries } from '../services/enquiryService.js';
 import { getMonthlyReport } from '../services/analyticsService.js';
+import { getAllUsers } from '../services/userService.js';
 
 const router = express.Router();
 
@@ -171,6 +172,19 @@ router.get('/reports/monthly', verifyToken, async (req, res) => {
     res.json({ success: true, report });
   } catch (error) {
     res.status(500).json({ error: 'Failed to generate report' });
+  }
+});
+
+/**
+ * GET /api/admin/users
+ * Get all registered users
+ */
+router.get('/users', verifyToken, async (req, res) => {
+  try {
+    const users = await getAllUsers();
+    res.json({ success: true, users });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch users' });
   }
 });
 

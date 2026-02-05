@@ -12,6 +12,16 @@ const PRODUCTS = [
 
 export default function AdminProducts() {
   const [searchQuery, setSearchQuery] = useState("")
+  const normalizedSearchQuery = searchQuery.trim().toLowerCase()
+
+  const filteredProducts = PRODUCTS.filter(product => {
+    if (!normalizedSearchQuery) return true
+    return (
+      product.name.toLowerCase().includes(normalizedSearchQuery) ||
+      product.sku.toLowerCase().includes(normalizedSearchQuery) ||
+      product.category.toLowerCase().includes(normalizedSearchQuery)
+    )
+  })
 
   return (
     <div className="space-y-6">
@@ -62,7 +72,7 @@ export default function AdminProducts() {
               </tr>
             </thead>
             <tbody>
-              {PRODUCTS.map(product => (
+              {filteredProducts.map(product => (
                 <tr key={product.id} className="border-t hover:bg-neutral-50 dark:hover:bg-neutral-700/30">
                   <td className="p-4 font-medium">{product.name}</td>
                   <td className="p-4 text-muted-foreground font-mono text-xs">{product.sku}</td>
